@@ -30,7 +30,7 @@ public class MacroCalculator {
      */
      
 
-    public double TDEEFormula(String activity, double REE) {
+    public static double TDEEFormula(String activity, double REE) {
         if (activity == "Sedentary") {
             return REE * 1.2;
         } else if (activity == "Lightly Active") {
@@ -48,7 +48,7 @@ public class MacroCalculator {
      * Calculate calories for weight loss and weight gain via TDEE. This is for a calorie deficit of 20%.
      */
 
-     public double CaloriesForWeightLoss(double TDEE) {
+     public static double CaloriesForWeightLoss(double TDEE) {
          return TDEE - (TDEE * 0.2);
      }
 
@@ -56,7 +56,7 @@ public class MacroCalculator {
       * Calculate calories for weight gain via TDEE. This is for a calorie surplus of 20%.
       */
 
-    public double CaloriesForWeightGain(double TDEE) {
+    public static double CaloriesForWeightGain(double TDEE) {
         return TDEE + (TDEE * 0.2);
     }
 
@@ -72,7 +72,18 @@ public class MacroCalculator {
  * 1g of carbohydrates = 4 calories
  */
 
- public String MacroCalculator(double TDEE, double weightKG) {
+ public static String MacroCalculator(double TDEE, double weightKG, String goal) {
+
+        if (goal == "Weight Loss") {
+            TDEE = CaloriesForWeightLoss(TDEE);
+        } else if (goal == "Weight Gain") {
+            TDEE = CaloriesForWeightGain(TDEE);
+        } else if (goal == "Maintain Weight") {
+            TDEE = TDEE;
+        } else {
+            System.out.println("Invalid goal");
+        }
+
         double proteinGrams = weightKG / 2.2; // 1g of protein for 1lb of bodyweight
         double fatGrams = (TDEE * 0.2) / 9; // 20% of total calories from fat divided by 9 calories per gram of fat
         double carbohydratesGrams = (TDEE - (proteinGrams * 4) - (fatGrams * 9)) / 4; // Remaining calories after protein and fat have been accounted for divided by 4 calories per gram of carbohydrates
@@ -87,40 +98,95 @@ public class MacroCalculator {
 
         System.out.println("Macro Calculator");
 
-        System.out.println("Age: ");
+        // Scanners to get input from user
 
+
+        //get age
+        System.out.println("Age: ");
         Scanner ageInput = new Scanner(System.in);
         int age = ageInput.nextInt();
-        ageInput.close();
+        //ageInput.close();
 
+        // get weight
         System.out.println("Weight (kg): ");
-
         Scanner weightInput = new Scanner(System.in);
         double weightKG = weightInput.nextDouble();
-        weightInput.close();
+        //weightInput.close();
 
+        // get height
         System.out.println("Height (cm): ");
         Scanner heightInput = new Scanner(System.in);
         double heightCM = heightInput.nextDouble();
-        heightInput.close();
+        //heightInput.close();
 
+        // get activity level
         System.out.println("What is your activity level? Sedentary, Lightly Active, Moderately Active, or Very Active?");
         System.out.println("Sendetary: Little to no exercise" + "\n" + "Lightly Active: Light exercise 1-3 days per week" + "\n" + "Moderately Active: Moderate exercise 3-5 days per week" + "\n" + "Very Active: Heavy exercise 6-7 days per week");
 
         Scanner activityInput = new Scanner(System.in);
         String activity = activityInput.nextLine().toUpperCase();
 
+        // get gender
         System.out.println("Gender (Male/Female: ");
         Scanner genderInput = new Scanner(System.in);
         String gender = genderInput.nextLine().toUpperCase();
-        genderInput.close();
+        //genderInput.close();
+
+         // we need to get the goal from the user. This goal can be to gain weight, lose weight, or maintain weight. 
+
+         System.out.println("What is your goal? Weight Loss, Weight Gain, or Maintain Weight?");
+         Scanner goalInput = new Scanner(System.in);
+         String goal = goalInput.nextLine().toUpperCase();
+         //goalInput.close();
+        
+        // calculate TDEE
+        double TDEE = 0;
 
 
         if (gender == "Male") {
-            double REEMen = REEformulaMen(weightKG, heightCM, age);
+            double REEMen = REEformulaMen(weightKG, heightCM, age); // REE for men
+
+            // TDEE for men
+            if (activity == "Sedentary") {
+                TDEE = TDEEFormula("Sedentary", REEMen);
+            } else if (activity == "Lightly Active") {
+                TDEE = TDEEFormula("Lightly Active", REEMen);
+            } else if (activity == "Moderately Active") {
+                TDEE = TDEEFormula("Moderately Active", REEMen);
+            } else if (activity == "Very Active") {
+                TDEE = TDEEFormula("Very Active", REEMen);
+            } else {
+                System.out.println("Invalid activity level.");
+            }
         } else {
-            double REEWomen = REEformulaWomen(weightKG, heightCM, age);
+            double REEWomen = REEformulaWomen(weightKG, heightCM, age); // REE for women
+
+            //TDEE for women
+            if (activity == "Sedentary") {
+                TDEE = TDEEFormula("Sedentary", REEWomen);
+            } else if (activity == "Lightly Active") {
+                TDEE = TDEEFormula("Lightly Active", REEWomen);
+            } else if (activity == "Moderately Active") {
+                TDEE = TDEEFormula("Moderately Active", REEWomen);
+            } else if (activity == "Very Active") {
+                TDEE = TDEEFormula("Very Active", REEWomen);
+            } else {
+                System.out.println("Invalid activity level.");
+            }
         }
+
+       
+
+        // Time to calculate macronutrients
+
+        System.out.println("Macronutrient Calculator");
+        MacroCalculator(TDEE, weightKG, goal);
             
+        // close scanners
+        ageInput.close();
+        weightInput.close();
+        heightInput.close();
+        activityInput.close();
+        goalInput.close();
     }
 }
