@@ -3,4 +3,4 @@ This repo performs 2 things. It first has a Macro Calculator to find out what ma
 
 All of the calculations are based off of the Mifflin-St Jeor formula. It is very popular and a respected macro formula used to calculate REE. 
 
-To calculate 
+
