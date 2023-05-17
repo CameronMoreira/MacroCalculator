@@ -74,11 +74,11 @@ public class MacroCalculator {
 
  public static String MacroCalculator(double TDEE, double weightKG, String goal) {
 
-        if (goal == "Weight Loss") {
+        if (goal.equalsIgnoreCase("Weight Loss")) {
             TDEE = CaloriesForWeightLoss(TDEE);
-        } else if (goal == "Weight Gain") {
+        } else if (goal.equalsIgnoreCase("Weight Gain")) {
             TDEE = CaloriesForWeightGain(TDEE);
-        } else if (goal == "Maintain Weight") {
+        } else if (goal.equalsIgnoreCase("Maintain Weight")) {
             TDEE = TDEE;
         } else {
             System.out.println("Invalid goal");
@@ -127,7 +127,7 @@ public class MacroCalculator {
         String activity = activityInput.nextLine().toUpperCase();
 
         // get gender
-        System.out.println("Gender (Male/Female: ");
+        System.out.println("Gender (Male/Female): ");
         Scanner genderInput = new Scanner(System.in);
         String gender = genderInput.nextLine().toUpperCase();
         //genderInput.close();
@@ -143,17 +143,17 @@ public class MacroCalculator {
         double TDEE = 0;
 
 
-        if (gender == "Male") {
+        if (gender.equals("Male")) {
             double REEMen = REEformulaMen(weightKG, heightCM, age); // REE for men
 
             // TDEE for men
-            if (activity == "Sedentary") {
+            if (activity.equalsIgnoreCase("Sendentary")) {
                 TDEE = TDEEFormula("Sedentary", REEMen);
-            } else if (activity == "Lightly Active") {
+            } else if (activity.equalsIgnoreCase("Lightly Active")) {
                 TDEE = TDEEFormula("Lightly Active", REEMen);
-            } else if (activity == "Moderately Active") {
+            } else if (activity.equalsIgnoreCase("Moderately Active")) {
                 TDEE = TDEEFormula("Moderately Active", REEMen);
-            } else if (activity == "Very Active") {
+            } else if (activity.equalsIgnoreCase("Very Active")) {
                 TDEE = TDEEFormula("Very Active", REEMen);
             } else {
                 System.out.println("Invalid activity level.");
@@ -164,11 +164,11 @@ public class MacroCalculator {
             //TDEE for women
             if (activity == "Sedentary") {
                 TDEE = TDEEFormula("Sedentary", REEWomen);
-            } else if (activity == "Lightly Active") {
+            } else if (activity.equalsIgnoreCase("Lightly Active")) {
                 TDEE = TDEEFormula("Lightly Active", REEWomen);
-            } else if (activity == "Moderately Active") {
+            } else if (activity.equalsIgnoreCase("Moderately Active")) {
                 TDEE = TDEEFormula("Moderately Active", REEWomen);
-            } else if (activity == "Very Active") {
+            } else if (activity.equalsIgnoreCase("Very Active")) {
                 TDEE = TDEEFormula("Very Active", REEWomen);
             } else {
                 System.out.println("Invalid activity level.");
@@ -180,7 +180,8 @@ public class MacroCalculator {
         // Time to calculate macronutrients
 
         System.out.println("Macronutrient Calculator");
-        MacroCalculator(TDEE, weightKG, goal);
+        String macroStatement = MacroCalculator(TDEE, weightKG, goal);
+        System.out.println(macroStatement);
             
         // close scanners
         ageInput.close();
